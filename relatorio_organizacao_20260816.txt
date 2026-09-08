@@ -1,0 +1,146 @@
+======================================================================
+RELATORIO DE ORGANIZACAO - SCRIPTS ORACLE DBA (Notion -> Google Drive)
+Data: 16/08/2026
+Fonte: https://indigo-crepe-520.notion.site/Scripts-Oracle-DBA-7ff962ea140c432cb4094bd858af0402
+(via exportacao manual Markdown & CSV, extraida em C:\Windows\Temp\notion_export)
+======================================================================
+
+----------------------------------------------------------------------
+1) TOPICOS ATUALIZADOS (pastas ja existentes no Drive)
+----------------------------------------------------------------------
+- TABLESPACES\TABLESPACES.txt : 34 scripts (arquivo criado pela primeira vez; pasta ja existia vazia)
+- Utilitarios\utilitarios.txt : 58 scripts novos ADICIONADOS ao final do arquivo existente (conteudo antigo preservado)
+
+----------------------------------------------------------------------
+2) TOPICOS CRIADOS (pastas novas)
+----------------------------------------------------------------------
+- AUDITORIA\AUDITORIA.txt : 13 scripts
+- A_CLASSIFICAR\A_CLASSIFICAR.txt : 4 scripts
+- BACKUP_DATAPUMP\BACKUP_DATAPUMP.txt : 21 scripts
+- BACKUP_RMAN\BACKUP_RMAN.txt : 15 scripts
+- CRIACAO_BANCO\CRIACAO_BANCO.txt : 15 scripts
+- DICIONARIO_DADOS\DICIONARIO_DADOS.txt : 12 scripts
+- INSTALACAO_GRID_ASM\INSTALACAO_GRID_ASM.txt : 24 scripts
+- PERFORMANCE\PERFORMANCE.txt : 35 scripts
+- REDO_ARCHIVELOG\REDO_ARCHIVELOG.txt : 9 scripts
+- SCHEMAS_USERS\SCHEMAS_USERS.txt : 20 scripts
+- SESSOES\SESSOES.txt : 17 scripts
+
+TOTAL DE SCRIPTS GRAVADOS: 277
+TOTAL DE SCRIPTS EXTRAIDOS DO NOTION: 287
+TOTAL DE DUPLICATAS PULADAS (nao gravadas novamente): 10
+
+----------------------------------------------------------------------
+3) SCRIPTS QUE ESTAVAM 'SOLTOS' NO NOTION (fora de qualquer secao/topico)
+----------------------------------------------------------------------
+- "[bloco de código solto - continuação do Method 1, comando para matar a sessão do RMAN]" (linha ~2803 do export)
+    -> direcionado para: BACKUP_RMAN
+- "[bloco de código solto - fragmento sem contexto claro, aparenta ser um nome de script/placeholder]" (linha ~2828 do export)
+    -> direcionado para: A_CLASSIFICAR
+- "[bloco de código solto após seção CONTROLFILES - redundante com item 'Ver a configuração dos controlfiles']" (linha ~2942 do export)
+    -> direcionado para: UTILITARIOS
+- "[bloco de código solto após seção CONTROLFILES - consulta v$controlfile]" (linha ~2946 do export)
+    -> direcionado para: UTILITARIOS
+- "[bloco de código solto após seção CONTROLFILES - backup binario/trace do controlfile]" (linha ~2950 do export)
+    -> direcionado para: UTILITARIOS
+- "[bloco de código solto após seção CONTROLFILES - backup trace arquivo texto]" (linha ~2959 do export)
+    -> direcionado para: UTILITARIOS
+- "[bloco de código solto após seção CONTROLFILES - backup do controlfile via RMAN]" (linha ~2964 do export)
+    -> direcionado para: BACKUP_RMAN
+- "[texto solto no final do arquivo, após o link para a sub-página de instalação do Grid/ASM]" (linha ~4823 do export)
+    -> direcionado para: UTILITARIOS
+
+----------------------------------------------------------------------
+4) SCRIPTS EM 'A_CLASSIFICAR' (baixa confianca na categorizacao - revisar manualmente)
+----------------------------------------------------------------------
+- "Utilitario ASMCA (ASM Configuration Assistant" (linha ~237 do export)
+    Motivo: Bullet sem bloco de código associado (título incompleto/sem conteúdo no Notion original) - nada para classificar além do título.
+- "Comando usado para consultar o sga_max_size" (linha ~2358 do export)
+    Motivo: Bullet sem bloco de código associado no Notion original (título incompleto/sem conteúdo).
+- "[bloco de código solto - fragmento sem contexto claro, aparenta ser um nome de script/placeholder]" (linha ~2828 do export)
+    Motivo: Bloco de código solto (sem bullet/descrição) logo após a seção 'Como matar Oracle RMAN backup job', contendo apenas '>kill_job'. Não há contexto suficiente para saber se é um comando real, nome de arquivo ou anotação incompleta.
+- "Script para" (linha ~4599 do export)
+    Motivo: Bullet incompleto ('Script para') sem bloco de código associado no Notion original — seção inteira 'RECOVERY AREA (RECOC)' ficou sem conteúdo.
+
+----------------------------------------------------------------------
+5) SCRIPTS QUE PARECERAM DUPLICADOS (nao foram gravados de novo)
+----------------------------------------------------------------------
+Ja existiam, em essencia, dentro de Utilitarios\utilitarios.txt antes desta migracao.
+Revise se quer manter so a versao antiga, ou se alguma variacao do Notion vale a pena incorporar:
+- "Para verificar os SID (System ID) e os valores do ORACLE_HOME dos bancos no servidor linux" (duplicata de conteudo em: utilitarios.txt)
+- "Para se conectar ao usuário oracle" (duplicata de conteudo em: utilitarios.txt)
+- "Para se conectar ao sqlplus como sys e/ou com outro usuario" (duplicata de conteudo em: utilitarios.txt)
+- "Comandos para start/stop de um banco ou uma instancia (em caso de single instance) via SQLPLUS" (duplicata de conteudo em: utilitarios.txt)
+- "Comandos para start/stop/status de um banco ou uma instancia (m caso de RAC) direto no terminal linux" (duplicata de conteudo em: utilitarios.txt)
+- "Script para consultar a versão do banco de dados" (duplicata de conteudo em: utilitarios.txt)
+- "Script para coletar o TFA" (duplicata de conteudo em: utilitarios.txt)
+- "Script para consultar o RECYCLEBIN (Lixeira) do ORACLE" (duplicata de conteudo em: utilitarios.txt)
+- "Script para limpar a RECYCLEBIN" (duplicata de conteudo em: utilitarios.txt)
+- "Query para consultar o uptime do banco" (duplicata de conteudo em: utilitarios.txt)
+
+----------------------------------------------------------------------
+6) OBSERVACOES ADICIONAIS
+----------------------------------------------------------------------
+- O topico REDO_ARCHIVELOG foi criado por conter volume proprio de scripts (9) sobre
+  redo logs / archive logs, e nao se encaixava bem nos topicos originalmente listados.
+- O topico CRIACAO_BANCO foi separado de INSTALACAO_GRID_ASM: o primeiro cobre criacao/
+  remocao de CDB/PDB via DBCA ou CREATE DATABASE; o segundo cobre o passo-a-passo de instalacao
+  de SO/GRID/ASM/software Oracle (vindo da sub-pagina 'DOC INSTALACAO ORACLE GRID ASM').
+- A pagina do Notion NAO foi alterada em nenhum momento (somente leitura).
+- O arquivo 'TABLESPACES\Novo(a) Documento de Texto.txt' (0 bytes, nome padrao do Windows)
+  foi deixado intacto, sem conteudo relevante para preservar.
+- 4 blocos soltos apos a secao CONTROLFILES pareceram redundantes com um item ja existente
+  na mesma secao original ('Ver a configuracao dos controlfiles'); foram mantidos mesmo assim
+  dentro de UTILITARIOS para nao perder informacao -- vale revisar se sao mesmo uteis.
+
+======================================================================
+7) ADENDO 16/08/2026 - CRIACAO DO TOPICO ASM (a pedido, apos revisao de A_CLASSIFICAR)
+======================================================================
+Varredura pela palavra-chave "ASM"/"ORACLEASM" em todos os arquivos ja migrados.
+Criada a pasta ASM\ASM.txt com 18 scripts consolidados:
+  - 9 vindos de Utilitarios\utilitarios.txt (Comandos ORACLEASM, consultas de ASM
+    disk/diskgroup, conexao ASMCMD, script asmdu.sh, lsdg/lsdsk/lsattr/mount/umount)
+  - 8 vindos de INSTALACAO_GRID_ASM\INSTALACAO_GRID_ASM.txt (download/config do
+    ASMLIB, iniciar ORACLEASM, fdisk dos discos, criar alias ASM, verificar diskgroup
+    DATA, criar diskgroup ARCH via ASMCA, consultar diskgroup via asmcmd)
+  - 1 vindo de A_CLASSIFICAR\A_CLASSIFICAR.txt ("Utilitario ASMCA" - ficou sem corpo,
+    o titulo ja e claramente sobre ASM, entao foi movido mesmo assim)
+
+2 blocos que continham a palavra "ASM" NAO foram movidos por serem sobre outro assunto
+(ASM so era citado de passagem):
+  - "Adicionar um novo controlfile" (Utilitarios) - e sobre controlfile, cita ASM so
+    como alternativa de copia via ASMCMD. Permanece em Utilitarios.
+  - "Criando um novo CDB com CREATE DATABASE (nao levando em conta ASM)" (CRIACAO_BANCO)
+    - o titulo diz explicitamente que NAO usa ASM. Permanece em CRIACAO_BANCO.
+  - "[texto solto no final do arquivo...]" (Utilitarios) - o titulo citava "Grid/ASM"
+    so como localizacao no Notion original; o conteudo real e sobre erro ORA-00257
+    (archiver), sem relacao com ASM. Permanece em Utilitarios.
+
+A_CLASSIFICAR ficou com 3 itens (era 4): sga_max_size, fragmento ">kill_job" e
+"Script para" (RECOVERY AREA vazia no Notion) - ainda pendentes de revisao manual.
+
+======================================================================
+8) ADENDO 16/08/2026 - FECHAMENTO DA REVISAO MANUAL DE A_CLASSIFICAR
+======================================================================
+Revisados com o usuario os 3 itens que restaram em A_CLASSIFICAR apos a
+criacao do topico ASM (ver adendo anterior). Decisao para cada um:
+
+- "Comando usado para consultar o sga_max_size" -> APAGADO.
+  Bullet vazio no Notion original (sem bloco de codigo associado).
+
+- ">kill_job" (fragmento solto, linha ~2828 do export) -> APAGADO.
+  Sem contexto suficiente para saber se era comando real ou anotacao incompleta.
+
+- "Script para" (secao RECOVERY AREA (RECOC) vazia no Notion) -> APAGADO.
+  A secao inteira ficou sem conteudo no Notion original.
+
+Com isso o arquivo A_CLASSIFICAR.txt ficou vazio e foi removido, junto com a
+pasta A_CLASSIFICAR (que nao tem mais nenhum item pendente de classificacao).
+Se a pasta ainda aparecer vazia no Google Drive, e apenas cache de sincronizacao
+da unidade virtual e pode ser apagada manualmente sem perda de dados.
+
+TOPICOS FINAIS: 14 pastas (13 com conteudo + a extinta A_CLASSIFICAR removida).
+
+======================================================================
+FIM DO RELATORIO
+======================================================================
