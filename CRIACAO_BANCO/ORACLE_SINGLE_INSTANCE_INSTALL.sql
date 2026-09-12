@@ -125,3 +125,5 @@ KERNEL=="sd*", OWNER="grid", GROUP="asmadmin", MODE="0660", ENV{DEVTYPE}=="disk"
 
 
 --** ETAPA 2 - INSTALAÇÃO DO ORACLE GRID INFRAESTRUCUTRE, E ORACLE DATABASE**--
+
+--Fazer o download do Oracle Grid Infrastructure 19c e Oracle Database 19c no site da Oracle. (https://www.oracle.com/br/database/technologies/oracle19c-linux-downloads.html)
