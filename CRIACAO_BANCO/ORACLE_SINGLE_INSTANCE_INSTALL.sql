@@ -6,6 +6,8 @@ Objective: Script de instalação do Oracle Database 19c em um servidor Oracle L
 Link de apoio: https://en.data4tech.com/post/oracle-grid-infrastructure-19c-and-oracle-database-19c-single-instance-installation-on-oracle-linux
 */
 
+
+--** ETAPA 1 - CONFIGURAÇÃO DO SERVIDOR, PRE-INSTALL DO ORACLE, CRIACAO DO USUAIO GRID E GRUPOS E CONFIGURAÇÃO DE DISCOS PARA ASM **--
 --Desativar o firewall default do linux.
 [root@oraclelinux ~]# systemctl stop firewalld
 [root@oraclelinux ~]# systemctl disable firewalld
@@ -95,5 +97,31 @@ vi /etc/hosts
 
 
 
+--Configuração dos discos para serem usados no ASM. (Com usuario root)
+
+--Listar os discos disponíveis no servidor.
+[root@oraclelinux ~]# lsblk
 
 
+--Com o nome dos discos disponíveis, criar os volumes físicos para o ASM. rodar o comando abaixo para pegar o UID dos discos.
+[root@oraclelinux ~]# /lib/udev/scsi_id -gud /dev/sdb
+[root@oraclelinux ~]# /lib/udev/scsi_id -gud /dev/sdc
+
+--Criar um arquivo de rules para dispositivos do ASM e  com os parametros.
+vi /etc/udev/rules.d/99-asm-disks.rules
+
+/*
+KERNEL=="sd*", OWNER="grid", GROUP="asmadmin", MODE="0660", ENV{DEVTYPE}=="disk", PROGRAM=="/lib/udev/scsi_id -gud /dev/$name", RESULT=="1ATA_VBOX_HARDDISK_VB8ffdec7f-e4ab2503", SYMLINK+="oracleasm/DATA_ASM_1"
+KERNEL=="sd*", OWNER="grid", GROUP="asmadmin", MODE="0660", ENV{DEVTYPE}=="disk", PROGRAM=="/lib/udev/scsi_id -gud /dev/$name", RESULT=="1ATA_VBOX_HARDDISK_VB2f9218b4-51c05db1", SYMLINK+="oracleasm/RECO_ASM_1"
+*/
+
+--Recarregar as regras do udev.
+[root@oraclelinux ~]# udevadm control --reload-rules && udevadm trigger --action=add
+
+--(Opcional) Verificar se os discos foram criados corretamente.
+[root@oraclelinux ~]# ls -lahtr /dev | grep -e sdb -e sdc
+[root@oraclelinux ~]# ls -lahtr /dev/oracleasm/
+
+
+
+--** ETAPA 2 - INSTALAÇÃO DO ORACLE GRID INFRAESTRUCUTRE, E ORACLE DATABASE**--
