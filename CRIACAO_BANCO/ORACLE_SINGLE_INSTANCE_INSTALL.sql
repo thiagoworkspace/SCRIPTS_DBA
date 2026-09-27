@@ -156,7 +156,7 @@ KERNEL=="sd*", OWNER="grid", GROUP="asmadmin", MODE="0660", ENV{DEVTYPE}=="disk"
 "The configuration of Oracle Grid Infrastructure for a Standalone Server is complete"
 
 
---4) Com a conclusão da instalação, rodar o comando crsctl stat res -t
+--5) Com a conclusão da instalação, rodar o comando crsctl stat res -t
 [grid@oraclelinux grid]$ /u01/app/19.0.0/grid/bin/crsctl stat res -t
 "
 --------------------------------------------------------------------------------
@@ -184,13 +184,13 @@ ora.evmd
 --------------------------------------------------------------------------------
 "
 
---5) Rodar o comando asmca para criar o disck group de RECO (lembrar de exportar as variaveis CV_ASSUME_DISTID e DISPLAY).
+--6) Rodar o comando asmca para criar o disck group de RECO (lembrar de exportar as variaveis CV_ASSUME_DISTID e DISPLAY).
 [grid@oraclelinux bin]$ cd /u01/app/19.0.0/grid/bin
 [grid@oraclelinux bin]$ ./asmca
 
 "ASM -> Disk Groups -> Create -> Disk Group Name: RECO -> Redundancy: External (only for this lab)  -> Select Disks 'RECO_ASM_1' -> Click OK"
 
---6) Instalar o Oracle Database 19c. Subir o Oracle Database 19c no servidor alterar o owner para oracle e descompactar o arquivo como oracle (com o usuario oracle).
+--7) Instalar o Oracle Database 19c. Subir o Oracle Database 19c no servidor alterar o owner para oracle e descompactar o arquivo como oracle (com o usuario oracle).
 
 
 
