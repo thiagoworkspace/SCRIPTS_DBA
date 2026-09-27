@@ -127,3 +127,33 @@ KERNEL=="sd*", OWNER="grid", GROUP="asmadmin", MODE="0660", ENV{DEVTYPE}=="disk"
 --** ETAPA 2 - INSTALAÇÃO DO ORACLE GRID INFRAESTRUCUTRE, E ORACLE DATABASE**--
 
 --Fazer o download do Oracle Grid Infrastructure 19c e Oracle Database 19c no site da Oracle. (https://www.oracle.com/br/database/technologies/oracle19c-linux-downloads.html)
+
+--1) Subir o Oracle Grid Infrastructure 19c no servidor alterar o owner para grid e descompactar o arquivo como grid.
+[root@oraclelinux ~]# cd /u01/app/19.0.0/grid
+[root@oraclelinux ~]# unzip /u01/app/19.0.0/grid/LINUX.X64_193000_grid_home.zip
+
+
+--2) Exportar as variáveis de ambiente DISPLAY e CV_ASSUME_DISTID.
+[root@oraclelinux ~]# export DISPLAY=<ip_do_servido_local>:0.0
+[root@oraclelinux ~]# export CV_ASSUME_DISTID=OEL7
+
+--3) Rodar o comando de instalação do Oracle Grid Infrastructure 19c.
+[root@oraclelinux ~]# ./gridSetup.sh  
+
+--4) Seguir os passos do assistente de instalação do Oracle Grid Infrastructure 19c.
+"Configure Oracle Grid Infrastructure for a Standalone Server (Oracle Restart)"
+"Create ASM Disk Group -> Disk group Name -> DATA -> Redundancy -> external (only for this lab) change discovery path to /dev/oracleasm/* -> Select Disks 'DATA_ASM_1' only"
+"Specify ASM Passwords -> Use same password for all accounts -> Enter Password"
+"Specify Management Options -> Do not configure Enterprise Manager (EM) Express"
+"Privileged Operating System Groups -> Specify the groups for ASM and OSDBA, OSOPER, and OSASM"
+"Specify Installation Location -> /u01/app/19.0.0/grid"
+"Create Inventory -> /u01/app/oraInventory"
+"Root Script Execution -> Execute the scripts as root user"
+"Perform Prerequisite Checks -> Ignore any warnings and continue"
+"Installation Summary -> Install"
+
+
+
+
+
+
