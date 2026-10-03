@@ -197,6 +197,7 @@ ora.evmd
 "ASM -> Disk Groups -> Create -> Disk Group Name: RECO -> Redundancy: External (only for this lab)  -> Select Disks 'RECO_ASM_1' -> Click OK"
 
 --7) Instalar o Oracle Database 19c. Subir o Oracle Database 19c no servidor alterar o owner para oracle e descompactar o arquivo como oracle (com o usuario oracle).
+[oracle@oraclelinux ~]$ cd /u01/app/oracle/product/19.0.0/dbhome_1/
 
 
 
