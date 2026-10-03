@@ -198,6 +198,51 @@ ora.evmd
 
 --7) Instalar o Oracle Database 19c. Subir o Oracle Database 19c no servidor alterar o owner para oracle e descompactar o arquivo como oracle (com o usuario oracle).
 [oracle@oraclelinux ~]$ cd /u01/app/oracle/product/19.0.0/dbhome_1/
+[oracle@oraclelinux dbhome_1]$ chown oracle:oinstall /u01/app/oracle/product/19.0.0/dbhome_1/LINUX.X64_193000_db_home.zip
+[oracle@oraclelinux dbhome_1]$ unzip -q /u01/app/oracle/product/19.0.0/dbhome_1/LINUX.X64_193000_db_home.zip
+
+
+
+---8) Exportar as varíaveis de ambiente DISPLAY e CV_ASSUME_DISTID (com o usuario oracle).
+[oracle@oraclelinux dbhome_1]$ export DISPLAY=<ip_do_servidor_local>:0.0
+[oracle@oraclelinux dbhome_1]$ export CV_ASSUME_DISTID=OEL7
+
+
+--9) Seguir os passos do assistente de instalação do Oracle Datbase 19c.
+"Select Configuration Option -> Set up Software Only"
+"Select Database Installation Option -> Single Instance Database Installation"
+"Select Database Edition -> Enterprise Edition"
+"Specify Installation Location -> Oracle base: /u01/app/oracle" 
+"Privileged Operating System Groups -> OSDBA: dba | OSOPER: dba | OSBACKUPDBA: dba | OSDGDBA: dba | OSKMDBA: dba | OSRACDBA: dba"
+"Root Script Execution -> Execute the scripts as root user"
+"Perform Prerequisite Checks -> Ignore any warnings and continue"
+"Install progress -> Install"
+"Execute root scripts -> Execute the scripts as root user in another terminal"
+"Completion of Oracle Database 19c Software Installation"
+
+
+
+--10) Seguir os passos para criar o banco de dados Oracle Database 19c. com dbca (com o usuario oracle).
+[oracle@oraclelinux dbhome_1]$ cd /u01/app/oracle/product/19.0.0/dbhome_1/bin
+[oracle@oraclelinux bin]$ ./dbca
+"Select Database Operation -> Create a Database"
+"Select Database Creation Mode -> Advanced Configuration"
+"Select Database Template -> General Purpose or Transaction Processing"
+"Specify Database Identification -> Create as Container Database -> Global Database Name: orcl | SID: orcl | Create as a Container Database: Yes | Number of PDBs to create: 1 | PDB Name: pdb"
+"Select Database Storage -> Use Automatic Storage Management (ASM) -> Disk Group: DATA"
+"Select Fast Recovery Option -> Specify Fast Recovery Area: Automatic Storage Management (ASM) -> Disk Group: RECO | Enabling Archivelog Mode: Yes | Specify Fast Recovery Area Size: 5GB"
+"Specify Network Configuration Details -> Listener: LISTENER -> next"
+"Select Oracle Data Vault Config Option -> do nothing"
+"Specify Configuration Options -> Memory: Use Automatic Memory Management (AMM) | SGA Target: XGB | PGA Aggregate Target: XMB | Sizing Process -> 300 | Character Sets: WE8MSWN1252 | National Character Set: AL16UTF16 | Default Language and Territory: American/United States | Connections Mode: Dedicated | Sample Schemas: Add Sample Schemas"
+"Specify Management Options -> disable Enterprise Manager (EM) Express | Enable Enterprise Manager (EM) Database Express: No"
+"Specify Database User Credentials -> Use the same administrative password for all accounts: Administrative Password: <senha> | Confirm Password: <senha>"
+"Select Database Creation Options -> Create Database"
+"Finish -> Database Creation in Progress"
+
+
+
+
+
 
 
 
