@@ -1,7 +1,7 @@
 /*
 Author: Thiago Batista Barbosa Ribeiro
 Date: 2026-09-12 
-Version: Alfa
+Version: Beta
 Objective: Script de instalação do Oracle Database 19c em um servidor Oracle Linux 8+ single instance com ASM.
 Link de apoio: https://en.data4tech.com/post/oracle-grid-infrastructure-19c-and-oracle-database-19c-single-instance-installation-on-oracle-linux
 */
