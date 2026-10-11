@@ -26,4 +26,28 @@ orcl                           19.0.0.0.0        19.3.0.0.0                     
 
 --3) After downloading the patch, upload the file to a "temporary" directory on the Oracle Linux 8+ server where Oracle Database 19c is installed. For example, we can create a directory called "/u01/installs", copy the patch file there, change the owner to oracle:oinstall and unzip the file.
 
+--4) Access the unziped patch directory and check the README file for any specific instructions or prerequisites before applying the patch (we can export the README.html to our computer to a better view).
+--obs: Its important to read the README file carefully, as it may contain critical information about the patch, including any known issues or additional steps required for a successful application, such as the OPatch utility version.
+--obs2: For exemple, in this patch, the README file indicates that we need to have OPatch version 12.2.0.1.52 or later to apply this patch.
+
+--5) To check the current OPatch version installed on the server, we can run the following command in the terminal:
+$ORACLE_HOME/OPatch/opatch version
+OPatch Version: 12.2.0.1.17
+
+OPatch succeeded.
+
+--6) If the OPatch version is lower than the required version, we need to download and install the latest OPatch utility from the Oracle support site. The OPatch number is in the README file
+--obs: We download the release Opatch for DB <version> in this case 19.0.0.0.0 and plataform or language Linux x86-64. Upload the zip file in the same directory where we have the patch and unzip it. (owner mus be oracle:oinstall).
+
+
+--7) Now, we need to make a backup of the original OPatch directory before replacing it with the new version. We can do this by renaming the existing OPatch directory to something like "OPatch_bkp". After that, we can move the new OPatch directory to the $ORACLE_HOME directory. The commands to do this are as follows:
+[oracle@oraclelinux installs]$ mv OPatch/ OPatch_bkp/
+[oracle@oraclelinux installs]$ mv OPatch/ /u01/app/oracle/product/19.0.0/dbhome_1/
+[oracle@oraclelinux OPatch]$ ./opatch version
+OPatch Version: 12.2.0.1.53
+
+OPatch succeeded.
+
+
+
 
