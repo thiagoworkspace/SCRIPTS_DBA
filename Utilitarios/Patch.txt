@@ -1,0 +1,65 @@
+What is oracle Patch?
+An Oracle Patch is a set of files and updates released by oracle to fix bugs, close secutiry vulnerabilities, improve performance, or minor features to oracle software.
+
+Main types of Oracle Patches.
+
+• Release Update (RU): A cumulative, quarterly package containing proactive bug fixes and secutiry updates for modern oracle db version
+• secutiry Patch Updates (SPU) / Critical Patch Update (CPU): Quartaly, cumulative security-only releases that fix vulnerabilities across Oracle code and third-party components (released in January, April, July and October);
+• One-off / Interim Patch (Hotfix): A targeted patch created to fix a specific bug or security issue for a particular customer.
+• Patch Set Update (PSU): A cumulative quarterly bundle for legacy versions that includes SPU security fixes plus recommended stability fixes.
+
+
+Common Tools Used To Apply Patches
+• Opatch: A java-based command-line utility used to apply, roll back, and manage binary patches to ORACLE_HOME environments
+• Opatchauto: An automated tool that orchestrates pre-checks, binary patching, server restarts, and post-checks without manual intervention.
+• Datapatch: A utility executed post-installation to apply necessary SQL and dictionary changes inside the actual database.
+
+
+
+"
+Um patch da Oracle é um pacote de códigos fornecido pela Oracle Corporation para corrigir erros (bugs), resolver falhas de segurança, melhorar o desempenho ou atualizar funcionalidades de seus sistemas e bancos de dados (como o Oracle Database, Java/JDK ou WebLogic).
+
+Principais Tipos de Patches na Oracle
+
+• Interim Patches (ou one-off): Correções reativas e pontuais para resolver um problema ou bug específico de um cliente, normalmente integradas a atualizações futuras.
+• Security Patch Updates (SPU) (antigos Critical Patch Updates - CPU): Conjuntos de correções focados exclusivamente em eliminar vulnerabilidades de segurança no código da Oracle ou em componentes de terceiros. São liberados trimestralmente (geralmente em janeiro, abril, julho e outubro).
+• Patch Set Updates (PSU) ou Release Updates (RU): Pacotes proativos, cumulativos e amplamente testados que reúnem correções de bugs e de segurança sem alterar o número principal da versão do produto.
+• SQL Patch: Um recurso do Oracle SQL Repair Advisor que permite adicionar ou desabilitar hints (dicas de otimização) em comandos SQL problemáticos sem a necessidade de reescrever o código da aplicação.
+
+Por que eles são importantes?
+
+• Segurança da Informação: Fecham brechas que poderiam ser exploradas por ataques cibernéticos ou vazamentos de dados.
+• Estabilidade: Evitam travamentos, corrupção de dados ou falhas inesperadas na instância do banco de dados.
+• Suporte: Para baixar e aplicar esses pacotes de forma oficial, a empresa precisa manter um contrato de suporte ativo com a Oracle.
+
+
+
+
+Principais Utilitários de Patch da Oracle
+
+Os utilitários variam de acordo com o produto e a arquitetura (Banco de Dados, Grid Infrastructure ou Fusion Middleware):
+
+1. OPatch
+
+• O que é: O utilitário padrão baseado em Java.
+• Função: Permite a aplicação manual e a reversão (rollback) de patches nos arquivos binários do ORACLE_HOME. Ele também valida conflitos antes da instalação.
+• Comando comum: opatch apply e opatch lsinventory (para listar os patches instalados).
+
+2. OPatchAuto
+
+• O que é: Uma ferramenta avançada de orquestração de patches lançada a partir da versão 12c.
+• Função: Automatiza todo o ciclo de vida da atualização em ambientes complexos, como Oracle RAC (Real Application Clusters) e Grid Infrastructure.
+• Vantagem: Ele faz a análise prévia, derruba os serviços necessários no nó, aplica as alterações via OPatch e reinicia o servidor automaticamente, reduzindo o esforço manual e o risco de erros. Permite atualizações do tipo Rolling Patch (nó por nó, mantendo o ambiente no ar com zero de indisponibilidade).
+
+3. Datapatch
+
+• O que é: O utilitário pós-instalação a nível de banco de dados.
+• Função: Enquanto o OPatch atualiza os arquivos do sistema operacional (binários), o Datapatch carrega e executa as alterações de scripts SQL e PL/SQL diretamente dentro do dicionário de dados do banco.
+• Funcionamento: Quando você usa o OPatchAuto, ele chama o Datapatch de forma invisível. Se você usar o OPatch tradicional, precisará rodar o comando datapatch -verbose manualmente após subir o banco de dados.
+
+4. Oracle AutoUpgrade
+
+• O que é: Ferramenta moderna com foco primário em grandes atualizações (upgrades de versão).
+• Função: Nas versões recentes, ele passou a suportar a extração e o deploy automático de Gold Images já com os patches embutidos, acelerando o provisionamento e o patch concorrente.
+
+"

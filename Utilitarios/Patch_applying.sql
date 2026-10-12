@@ -48,6 +48,107 @@ OPatch Version: 12.2.0.1.53
 
 OPatch succeeded.
 
+--8) Now, we can proceed to apply the patch. Before applying the patch, we need to ensure that the databases are in a consistent state. We can do this by shutting down the databases and backup the DB_HOME directory.
+--obs: to backup the DB_HOME directory, we can use the step in the README file
+/*
+2 Prerequisites
+It is highly recommended to take a backup of the Oracle_Home binaries and Central Inventory prior to applying patches. For further information, see My Oracle Support document KB137807 How to Perform ORACLE_HOME Backup?.
+
+For SUSE Linux Enterprise Server (SLES) 15 SP3, and above, install the compat-libpthread-nonshared package. See section 5.5.12 in SUSE's release notes (for SLES 15 SP3) and Note KB117927.
+
+This section includes the following section:
+
+Section 2.1, "OPatch Utility"
+*/
+--obs: Or to simplyfy the process, we can use the following command to backup the DB_HOME directory:
+[oracle@oraclelinux 19.0.0]$ tar -pcvf /home/oracle/oracle_home_bkup.tar dbhome_1/
+
+
+--9) (OPTIONAL: because it's a good practice and when we run the apply it do the prereq automatically) Access the folder where the patch is located and run the following command to run the prereq script for the patch:
+[oracle@oraclelinux installs]$ /u01/app/oracle/product/19.0.0/dbhome_1/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph 39472050/
+Oracle Interim Patch Installer version 12.2.0.1.53
+Copyright (c) 2026, Oracle Corporation.  All rights reserved.
+
+PREREQ session
+
+Oracle Home       : /u01/app/oracle/product/19.0.0/dbhome_1
+Central Inventory : /u01/app/19.0.0/oraInventory
+   from           : /u01/app/oracle/product/19.0.0/dbhome_1/oraInst.loc
+OPatch version    : 12.2.0.1.53
+OUI version       : 12.2.0.7.0
+Log file location : /u01/app/oracle/product/19.0.0/dbhome_1/cfgtoollogs/opatch/opatch2026-10-11_14-38-00PM_1.log
+
+Invoking prereq "checkconflictagainstohwithdetail"
+
+Prereq "checkConflictAgainstOHWithDetail" passed.
+
+OPatch succeeded.
+
+
+--10) After running the prereq script, we can proceed to apply the patch. We can do this by running the following command in the terminal:
+oracle@oraclelinux 39472050]$ /u01/app/oracle/product/19.0.0/dbhome_1/OPatch/opatch apply -oh /u01/app/oracle/product/19.0.0/dbhome_1/
+--obs: In this moment we can see the patch doing the prereq automatically and asking if we want to continue with the patch application. We can type "y" to proceed.
+"Oracle Interim Patch Installer version 12.2.0.1.53
+Copyright (c) 2026, Oracle Corporation.  All rights reserved.
+
+
+Oracle Home       : /u01/app/oracle/product/19.0.0/dbhome_1
+Central Inventory : /u01/app/19.0.0/oraInventory
+   from           : /u01/app/oracle/product/19.0.0/dbhome_1/oraInst.loc
+OPatch version    : 12.2.0.1.53
+OUI version       : 12.2.0.7.0
+Log file location : /u01/app/oracle/product/19.0.0/dbhome_1/cfgtoollogs/opatch/opatch2026-10-11_15-09-28PM_1.log
+
+Verifying environment and performing prerequisite checks...
+
+--------------------------------------------------------------------------------
+Start OOP by Prereq process.
+Launch OOP...
+
+Oracle Interim Patch Installer version 12.2.0.1.53
+Copyright (c) 2026, Oracle Corporation.  All rights reserved.
+
+
+Oracle Home       : /u01/app/oracle/product/19.0.0/dbhome_1
+Central Inventory : /u01/app/19.0.0/oraInventory
+   from           : /u01/app/oracle/product/19.0.0/dbhome_1/oraInst.loc
+OPatch version    : 12.2.0.1.53
+OUI version       : 12.2.0.7.0
+Log file location : /u01/app/oracle/product/19.0.0/dbhome_1/cfgtoollogs/opatch/opatch2026-10-11_15-11-37PM_1.log
+
+Verifying environment and performing prerequisite checks...
+OPatch continues with these patches:   39472050
+
+Do you want to proceed? [y|n]"
+
+Patch 39472050 successfully applied.
+Sub-set patch [29517242] has become inactive due to the application of a super-set patch [39472050].
+Please refer to Doc ID 2161861.1 for any possible further required actions.
+Log file location: /u01/app/oracle/product/19.0.0/dbhome_1/cfgtoollogs/opatch/opatch2026-10-11_15-11-37PM_1.log
+
+OPatch succeeded.
+
+
+
+--11) After applying the patch, we can check the current database version again to verify that the patch has been applied successfully. We can do this by running the following command in sqlplus:
+SQL> SET LINESIZE 200
+SQL> COL INSTANCE_NAME FORMAT A30
+SQL> COL VERSION FORMAT A50
+SQL> COL VERSION_FULL FORMAT A50
+SQL> COL STATUS FORMAT A10
+SQL> SELECT INSTANCE_NAME, VERSION, VERSION_FULL, STATUS FROM V$INSTANCE;
+INSTANCE_NAME                  VERSION                                            VERSION_FULL                                       STATUS
+------------------------------ -------------------------------------------------- -------------------------------------------------- ----------
+orcl                           19.0.0.0.0                                         19.32.0.0.0                                        OPEN
+
+
+--12) But this application of the patch only change the dbhome files, we need to run the datapatch utility to apply the SQL changes to the database. We can do this by running the following command in the terminal:
+
+
+
+
+
+
 
 
 
