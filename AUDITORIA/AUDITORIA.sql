@@ -333,3 +333,32 @@ FROM sys.aud$
 WHERE NTIMESTAMP# > SYSTIMESTAMP - INTERVAL '2' HOUR
 GROUP BY USERID, USERHOST, TERMINAL
 ORDER BY registros_2h DESC;
+
+==========================================================================
+SCRIPT: Script para consultar todas as audit policies criadas no database.
+==========================================================================
+obs-> polices com sintaxe ORA_ são polices cridadas pelo proprio oracle.
+obs2-> Documentação oficial da view no linkv https://docs.oracle.com/en/database/oracle/oracle-database/18/refrn/AUDIT_UNIFIED_POLICIES.html
+       
+SELECT * FROM AUDIT_UNIFIED_POLICIES;
+
+
+
+=================================================================================
+SCRIPT: Script para criar suas proprias policies e ativalas/desativalas (exlcuir)
+=================================================================================
+
+CREATE AUDIT POLICY <POLICY_NAME> ACTIONS <ACTION_LIST>;
+
+AUDIT POLICY <POLICY_NAME>;
+
+NOAUDIT POLICY <POLICY_NAME>;
+
+DROP AUDIT POLICY <POLICY_NAME>;
+
+
+==========================================================================
+SCRIPT: Script para consultar as policies ativas
+==========================================================================
+
+SELECT POLICY_NAME FROM AUDIT_UNIFIED_ENABLED_POLICIES;
