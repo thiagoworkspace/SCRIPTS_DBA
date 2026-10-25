@@ -190,7 +190,7 @@ ORA_ERR_NUMBER$ ORA_ERR_MESG$                          ORA_ERR_ROWID$ ORA_ERR_OP
 --------------- -------------------------------------- -------------- -------------- ------------ -- ------ ---------------- ------------
 1               ORA-00001: unique constraint (SYS_C00  AAABWMAAAACgCw0 I              op1          1  Daniel daniel@gmail.com 44-4444-4444
 1400            ORA-01400: cannot insert NULL into ("  AAABWMAAAACgCw1 I              op1          4        elisa@gmail.com  55-5555-5555
-12899           ORA-12899: value too large for column  AAABWMAAAACgCw2 I              op1          5  Fabio  fabio@gmail.com  66-6666-666666
+12899           ORA-12899: value too large for column  AAABWMAAAACgCw2 I              op1          5  Fabio  fabio@gmail.com  66-6666-666666"
 
 ============================================================
 SCRIPT: Comando SHOW CON_NAME
@@ -716,8 +716,17 @@ exec dbms_java.grant_permission( '<user_schema>', 'SYS:java.io.FilePermission', 
    --III) <dir_name> é o caminho completo do diretório
    --IV) read é a permissão de somente leitura, podendo ser também write para gravação e delete para exclusão
 
+
+
 ============================================================
-SCRIPT: [texto solto no final do arquivo, após o link para a sub-página de instalação do Grid/ASM]
-ORIGEM: Notion (SOLTO)
+SCRIPT: Consultas uteis para SCN
 ============================================================
-ORA-00257: Erro de archiver. Conecte como SYSDBA só até ser resolvido.
+
+--Verificar o SCN atual do banco de dados
+SELECT CURRENT_SCN FROM V$DATABASE;
+
+--Converter o SCN atual para a data/hora correspondente
+SELECT SCN_TO_TIMESTAMP(CURRENT_SCN) FROM DUAL;
+
+--Descobrir o SCN aproximado de uma data/hora especifica no passado.
+SELECT TIMESTAMP_TO_SCN(TO_TIMESTAMP('25/10/2026 10:00:00', 'DD/MM/YYYY HH24:MI:SS')) FROM DUAL;

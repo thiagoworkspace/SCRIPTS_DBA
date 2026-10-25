@@ -1,4 +1,4 @@
-ORACLE - FLASHBACK, SCN, REDOLOG E ARCHIVE
+ORACLE - FLASHBACK, SCN, REDOLOG-ARCHIVELOG e UNDO
 
 No oracle db, esses quatro conceitos estão intimamente ligados a recuperação de dados, consistencia
 e historico de alterações;
@@ -34,5 +34,26 @@ Como funciona: Quando o banco está em modo ARCHIVELOG, toda vez que um arquivo 
 Para que serve: Permite fazer a recuperação de desastres (Point-in-time recovery). Se o disco der problema, podemos pegar o bkp e aplicar todos os archive logs gerados até o ultimo minuto exato antes da falha.
 
 
-4. FLASHBACK
-O flashback
+4. Dados de UNDO
+O que são: São imagens de antes das alterações de dados originais gravadas antes de uma instrução DML modificar blocos na memoria.
+Principais funcoes:
+Rollback (desfazer): Permite reverter transações que o usuario cancelou ou que falharam.
+Consistencia de leitura: Permite que uma query veja os dados como eles eram no momento em que a cosulta começou, mesmo que outra transação esteja alterando esses mesmos dados simultaneamente
+Flashback Query: Permite consultar dados de um ponto específico no passado.
+
+A Relação entre Undo e Redolog
+
+A relação entre eles gera muita dúvida, mas a regra de ouro é simples: As alterações feitas nos blocos de undo TAMBÉM geram dados de redo.
+• Undo gera Redo (mas Redo não gera Undo): Quando você altera um dado da sua tabela, o Oracle escreve a imagem antiga no segmento de undo. Como o segmento de undo fica fisicamente alocado em blocos dentro de uma tablespace, essa própria escrita no undo é uma alteração no banco e, portanto, é registrada no Redo Log.
+• Por que o Undo gera Redo? Porque se a instância cair no meio de uma transação ou durante a recuperação (crash recovery), o Oracle precisa conseguir desfazer ou refazer inclusive as operações de undo de forma consistente. O Redo precisa registrar o ciclo inteiro.
+• Diferença de ciclo de vida:
+	• Undo é cíclico e temporário; os blocos antigos são marcados como expirados e sobrescritos com o tempo para dar espaço a novas transações.
+	• Redo é sequencial; os arquivos online redo logs são preenchidos e arquivados (archived logs), guardando o histórico de alterações por muito mais tempo (ou indefinidamente) para fins de Backup and Recovery / Point-in-Time Recovery
+
+
+
+
+
+
+5. FLASHBACK
+O flashback é uma tecnologia avançada da oracle que permite reverter erros humanos rapidamente sem a necessidade de recuperar um backup tradicional do banco de dados.

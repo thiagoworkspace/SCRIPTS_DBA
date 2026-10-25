@@ -1,0 +1,43 @@
+1. SCN (System Change Number)
+O SCN é o relogio logico do Oracle. É um numero sequencial que funciona como um carimbo de data/hora de extrema precisão (não usa o relogio do servidor mas sim um numero que avança incrementa a cada evento ou comando commit)
+-Como funciona: Cada vez que um usuario faz um commit, O oracle gera um novo SCN.
+-Para que serve: Ele garante a consistencia dos dados. Se o banco cair, o oracle olha para o SCN para saber
+exatamente até que ponto os arquivos estavam sincronizados e o que precisa ser recuperado.
+Recuperação: é usado pelo motor do oracle, para saber exatamente até que ponto aplicar os arquivos de redolog durante a recuperação de falha
+Flashback: Permite que recursos como o Flashback Query voltem ou consultem dados a um ponto especifico no tempo usando um SCN como referencia
+
+
+Como o Oracle gerencia o SCN
+
+• Incremento Contínuo: Cada transação que realiza um COMMIT gera e consome um novo valor de SCN. O número avança de forma estritamente crescente e nunca retrocede ou é zerado quando o banco de dados é reiniciado. Ele só reinicia em caso de uma nova encarnação do banco (após um restore incompleto com RESETLOGS).
+• Mapeamento de Tempo: O Oracle mantém uma tabela interna que mapeia valores aproximados de SCN para carimbos de data/hora reais (timestamps), permitindo converter horários em SCNs e vice-versa.
+• Armazenamento: O SCN do commit é gravado imediatamente no arquivo de log atual pelo processo Log Writer (LGWR) e também é inserido nos blocos de dados afetados, nos cabeçalhos dos datafiles e no arquivo de controle (control file).
+
+🛠️ Principais Aplicações do SCN
+
+• Consistência de Leitura (ACID): O Oracle usa o SCN para garantir que uma consulta veja os dados exatamente como eles estavam no momento em que a pesquisa começou. Se outra transação modificar um bloco após o início da consulta, o Oracle lê os dados antigos no segmento de Undo correspondentes àquele SCN.
+• Recuperação de Falhas (Recovery): Durante a inicialização do banco, o Oracle compara os SCNs gravados nos cabeçalhos dos datafiles com o control file. Se houver divergência, ele sabe exatamente a partir de qual SCN deve aplicar as transações gravadas nos redo logs para sincronizar o ambiente.
+• Tecnologia Flashback: Permite reverter tabelas, consultas ou o banco de dados inteiro para um momento exato no passado especificando o número do SCN desejado.
+• Sincronismo no Data Guard: O espelhamento entre o banco de dados Primário e o Standby é controlado e validado por meio do SCN para garantir que nenhuma transação seja perdida ou duplicada.
+
+
+No Oracle Database, a execução de um comando DDL afeta o SCN (System Change Number) de duas formas principais: incrementando o contador global e invalidando o uso de SCNs antigos para Flashback.
+Abaixo estão os detalhes de como um DDL afeta o SCN e a consistência do banco de dados:
+
+1. Incremento do SCN por Commit Implícito
+
+O SCN avança sempre que uma transação é confirmada (COMMIT).
+• Dois Commits por DDL: Toda instrução DDL no Oracle (como CREATE, ALTER ou DROP) executa de forma implícita um COMMIT imediatamente antes e outro imediatamente após a sua execução.
+• Avanço do Relógio: Por causa desses commits automáticos, um DDL sempre força o incremento do SCN global do banco de dados, avançando o "relógio lógico" do sistema.
+
+2. Impacto no Dicionário de Dados
+
+Os comandos DDL alteram a estrutura do banco de dados.
+• Essas modificações geram inserções, atualizações e exclusões nas tabelas internas do Dicionário de Dados (pertencentes ao schema SYS).
+• Essas manipulações internas são transações normais capturadas pelo banco e recebem carimbos de SCN para garantir a recuperação e consistência estrutural do dicionário de dados.
+
+3. Quebra de Consistência para Flashback (O maior impacto prático)
+
+O SCN permite "viajar no tempo" para consultar dados antigos através do recurso de Oracle Flashback Query.
+• Invalidação estrutural: Se você executar um DDL que altere a estrutura de uma tabela (ex: ALTER TABLE ... DROP COLUMN), o Oracle não conseguirá reconstruir a versão antiga da tabela para SCNs anteriores àquele DDL.
+• Erro de execução: Tentar ler dados usando um SCN antigo após um DDL estrutural resultará no erro ORA-01466: unable to read data - table definition has changed.

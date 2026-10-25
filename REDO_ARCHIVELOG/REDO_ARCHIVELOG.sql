@@ -1,7 +1,7 @@
 ============================================================
 SCRIPT: Script para consultar o grupo, sequencia e status de um log file.
 ============================================================
-SELECT GROUP#, SEQUENCE#, (BYTES/1024/1024/1024) GB, STATUS FROM  V$LOG;
+SELECT CON_ID, GROUP#, SEQUENCE#, (BYTES/1024/1024/1024) GB, STATUS FROM  V$LOG;
 
 #OBS: O STATUS "CURRENT" INDICA O LOG FILE QUE ESTÁ SENDO ESCRITO NESSE MOMENTO.
 # Os que tem status inativo são os que já podem ser utilizados novamente.
@@ -9,21 +9,49 @@ SELECT GROUP#, SEQUENCE#, (BYTES/1024/1024/1024) GB, STATUS FROM  V$LOG;
 #Sequence# -> é a sequencia que o Oracle coloca em cada redo a cada log switch, quando esse redo for
 a#arquivado , archived, esse número de sequencia tbm irá para o archive.
 
+Algumas regrinhas importantes do CON_ID no Oracle:
+• CON_ID = 0: Significa que a linha ou consulta não pertence a um container específico e vale para o banco inteiro (como em algumas views V$ do banco).
+• CON_ID = 1: É a raiz do banco de dados (o CDB$ROOT).
+• CON_ID = 2: É o banco de dados de modelo (o PDB$SEED).
+• CON_ID > 2: São os Pluggable Databases (PDBs) criados pelo usuário.
+
 ============================================================
 SCRIPT: Script para listar a localização dos log files no disco
 ============================================================
-SELECT GROUP#, SEQUENCE#, (BYTES/1024/1024) GB, STATUS FROM  V$LOG;
+SET LINESIZE 150
+SET PAGESIZE 100
+SET TRIMSPOOL ON
+
+-- Formatação das colunas
+COLUMN con_id FORMAT 999 HEADING 'CON'
+COLUMN group# FORMAT 9999 HEADING 'GROUP'
+COLUMN status FORMAT A10 HEADING 'FILE_STAT'
+COLUMN file_path FORMAT A60 HEADING 'FILE_PATH'
+COLUMN size_mb FORMAT 999,990.00 HEADING 'SIZE(MB)'
+COLUMN log_status FORMAT A10 HEADING 'LOG_STAT'
+
+-- Execução da consulta
+SELECT 
+    f.con_id,
+    f.group#, 
+    f.status, 
+    f.member AS file_path, 
+    l.bytes/1024/1024 AS size_mb, 
+    l.status AS log_status
+FROM v$logfile f
+JOIN v$log l ON f.group# = l.group# AND f.con_id = l.con_id;
 
 ============================================================
 SCRIPT: Script para força o log switch
 ============================================================
 #COMANDO USADO PARA SINGLE INSTANCE
 ALTER SYSTEM SWITCH LOGFILE;
+
 #COMANDO USADO EM RAC, CASO QUEIRA ALTERAR O LOGFILE CURRENT DE TODAS AS INSTANCIAS.
 ALTER SYSTEM SWITCH ALL LOGFILES;
 
 ============================================================
-SCRIPT: Script para trazer detalhes dos redologs
+SCRIPT: Script para trazer detalhes dos redologs (aposentar esse comando)
 ============================================================
 set lines 180
 COL group# FORM 99999

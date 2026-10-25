@@ -1,0 +1,50 @@
+REDOLOG FILES
+https://imasters.com.br/banco-de-dados/conhecendo-melhor-o-seu-banco-de-dados-redo-log-file
+Conceito:
+Essa estrutura localizada fisicamente em nosso Banco de Dados é a principal responsável por tornar possível refazermos uma determinada transação que possa ter sofrido algum tipo de
+indisponibilidade, seja por falhas ou gaps causados por nosso ambiente.
+Basicamente, em seu conteúdo estão as informações transacionadas
+pelas seções e instruções executadas, preservando sempre a imagem antiga
+do dado e a nova, pois em caso de queda da instance no processo de
+instance recovery, são eles quem farão os chamados Roll Fowarding.
+
+No caso dos nossos arquivos de redo, antes mesmo de serem gravados em disco, são geradas entradas no Buffer de redo, ou Redo Log Buffer,
+para aqueles que estão mais acostumados com as nomenclaturas padrões do
+Oracle. Só depois de realizado o comprometimento e/ou confirmação (commit) o Buffer é esvaziado, para dar lugar a novas estradas, pois nossos arquivos de Redo Log File trabalham de maneira cíclica entre os seus grupos, que por sua vez possuem seus respectivos membros.
+
+Nota
+Importante: em caso de ambientes em Oracle Real Application Cluster (RAC), cada nó participante do cluster tem sua identidade de redo logs
+individualmente criada; um grupo do nó 1 criado neste nó não poderá ser
+criado no nó 2 com o mesmo nome. Uma outra característica importante dos redos em RAC é que há um parâmetro novo a ser passado no
+comando de criação, que são os threads, eles indicaram em qual nó será
+criado aquele Relog Member.
+
+Particularidades dos Redos
+Em um banco de dados Oracle é necessário que haja pelo menos dois
+grupos de redo online, com um único membro em cada, porém recomenda-se
+que sejam criados, no mínimo, três membros por grupo, espelhados de maneira
+eficiente e lógica.
+
+Determinando tamanho de redo e realizando manutenções
+ crie com um tamanho de uns 50M, pra uma instance
+mediana creio que seja o suficiente até você acompanhar os desempenhos e
+os tempos de gravação e conseguir determinar um tamanho perto do “excelente” para os seus Redo Log Files.
+
+A própria Oracle determina que as alternâncias entre os arquivos devem compreender um tempo de 15 minutos, e se elas não satisfazerem a esse requisito você deverá aumentar seus redo logs até que alcancem esse patamar de tempo.
+
+Em um ambiente multitenant o conceito de Redo Log funciona de forma centralizada.
+O Redo Log é unico para todo CDB e é compartilhado por todos os PDBs
+Não existem arquivos de Redo log individuais por PDB. Todas as alterações feitas em qualquer PDB
+sao gravadas sequencialmente no mesmo conjunto de Redo Logs do CDB.
+
+Como o Redo log opera em multitenant:
+Para que essa arquitetura centralizada funcione sem misturar ou perder o rastro das informações de cada banco plugável, o Oracle utiliza os seguintes mecanismos:
+Identificacao por CON_ID: Cada registro de redo gerado por um PDB inclui um cabeçalho com o CON_ID(container ID).
+Esse ID identifica exatamente a qual PDB aquela alteração pertence.
+Para que essa arquitetura centralizada funcione sem misturar ou perder o rastro das informações de cada banco plugável, o Oracle utiliza os seguintes mecanismos:
+
+ Como funciona o Recovery (Recuperação)
+
+A separação por CON_ID é crucial no momento de recuperar os dados:
+• Recuperação do CDB (Instance Recovery): Se a instância do banco cair, o Oracle lê o Redo Log global e aplica as alterações necessárias em todos os PDBs simultaneamente.
+• Recuperação de um PDB Isolado (Media Recovery): Se apenas um PDB sofrer uma falha (por exemplo, a perda de um datafile do PDB), o administrador pode restaurar e recuperar apenas aquele PDB. O Oracle lerá o Redo Log do CDB, mas aplicará (dar o roll forward) apenas os registros que possuírem o CON_ID correspondente ao PDB em recuperação.
