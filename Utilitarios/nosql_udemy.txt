@@ -1,0 +1,148 @@
+--BANCO DE DADOS NÃO RELACIONAL (NOSQL) COM MONGODB e MONGOOSE.
+
+Diferença entre banco Relacional x Nao Relacional
+
+Os bancos relacionais demandam uma forte configuração de: tabelas, colunas e relações entre tabelas para o seu funcionamento
+O nao relacionais não sao rigorosos quanto a isso, podemos criar colunas quando um dado é inserido
+O que gera flexibilidade para o nao Relacional
+Apesar do nome, o nao relacional pode ter relações entre collections.
+
+MongoDB?
+É o banco nao relacional mais utilizado
+Os dados sao inseridos em formato de objeto(JSON)
+Os comandos, em vez de queries, são métodos
+Podemos criar relações entre entidades;
+Facilmente adaptado para diversas linguagens através de drivers
+Possui uma proximidade com JavaScript;
+
+
+Principais entidades 
+Database: é onde ficam as nossas collections e dados
+Collections: sao como as tabelas nos bancos relacionais, nelas vamos inserir os dados
+Documents: sao os dados, no MongoDB tem esta nomeclatura
+Collections podem ser criadas livremente a qualquer momento e não possuem colunas fixas para os dados.
+
+
+MongoDB e JSON
+O tipo de dado inserido na tabela é o BSON, uma variação de JSON;
+O BSON é semelhante ao JSON, porém com recursos a mais;
+A forma de criar um BSON é igual ao JSON:
+
+{
+    nome: "Thiago",
+    idade: 30
+}
+
+Criar um db ( o mongo so cria um db realmente quando tem dados)
+comando para mostrar todos os dbs
+show dbs
+
+para criar um banco
+use <nome_do_banco>
+
+
+criar uma collection
+inserir um dado e resgatar este mesmo dado por meio de um find.
+
+primeirobanco> db.primeiracollection.insertOne({ nome: "Thiago", idade: 31 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('6add548ae9d4490fb84e4169')
+}
+primeirobanco>
+
+primeirobanco> db.primeiracollection.findOne( {} )
+{
+  _id: ObjectId('6add548ae9d4490fb84e4169'),
+  nome: 'Thiago',
+  idade: 31
+}
+primeirobanco>
+
+
+exercicio
+inserir mais um dado e retornar todos os valores
+primeirobanco> db.primeiracollection.insertOne( {nome: "Batista", idade: 30} )
+{
+  acknowledged: true,
+  insertedId: ObjectId('6add55e4e9d4490fb84e416b')
+}
+primeirobanco> db.primeiracollection.find()
+[
+  {
+    _id: ObjectId('6add548ae9d4490fb84e4169'),
+    nome: 'Thiago',
+    idade: 31
+  },
+  {
+    _id: ObjectId('6add5568e9d4490fb84e416a'),
+    nome: 'Hello World',
+    idade: 1111
+  },
+  {
+    _id: ObjectId('6add55e4e9d4490fb84e416b'),
+    nome: 'Batista',
+    idade: 30
+  }
+]
+
+PODEMOS INSERIR REGISTROS COM MAIS OU MENOS COLUNAS MESMO QUE JA TENHA UM VALOR COM POR EXEMPLO 2 "COLUNAS"
+primeirobanco> db.primeiracollection.insertOne( {nome: "Joao", idade: 40, profissao: "Programador"} )
+{
+  acknowledged: true,
+  insertedId: ObjectId('6add564ee9d4490fb84e416c')
+}
+primeirobanco>
+primeirobanco> db.primeiracollection.find()
+[
+  {
+    _id: ObjectId('6add548ae9d4490fb84e4169'),
+    nome: 'Thiago',
+    idade: 31
+  },
+  {
+    _id: ObjectId('6add5568e9d4490fb84e416a'),
+    nome: 'Hello World',
+    idade: 1111
+  },
+  {
+    _id: ObjectId('6add55e4e9d4490fb84e416b'),
+    nome: 'Batista',
+    idade: 30
+  },
+  {
+    _id: ObjectId('6add564ee9d4490fb84e416c'),
+    nome: 'Joao',
+    idade: 40,
+    profissao: 'Programador'
+  }
+]
+
+
+=================================================================================
+SEÇÃO 2 - GERENCIAMENTO DE BANCOS DE DADOS
+
+Verificar todos os bancos
+Podemos verficicar os bancos do sistema com:show dbs
+mostra todos os bancos criados até o momento
+ah bancos default ja criados
+
+para criar um banco usamos o comando use <nome_banco>
+isso fará com que o banco seja inicializado, porém ele so será registrado de fato quando houver algum dado nele
+Podemos checar o banco atual com o comando db
+o comando use tbm serve para mudar de banco
+
+
+Criando Collections
+Não precisamos explicitamente criar uma collection, basta inserir um dado em alguma;
+comando db.<collection>.insertOne(<dados>)
+A collection será criada automaticamente, e tbm o banco persistirá no sistema
+Note que a instrução db vai referir sempre ao banco atual.
+
+
+Encontrando dados
+Para buscar dados utilizamos o comando: find
+Este comando recebe um filtro, para selecionarmos dados especificos.
+Exemplo: db.<collection>.find({nome:"joao"});
+Neste caso buscamos por uma document com uma chave nome e um valor joao
+O comando find procura o valor EXATO, nao funciona como um like 

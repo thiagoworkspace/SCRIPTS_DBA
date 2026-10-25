@@ -1,0 +1,38 @@
+ORACLE - FLASHBACK, SCN, REDOLOG E ARCHIVE
+
+No oracle db, esses quatro conceitos estão intimamente ligados a recuperação de dados, consistencia
+e historico de alterações;
+Eles trabalham juntos para garantir que nenhuma transação seja perdida e que podemos "viajar no tempo" se algo der errado
+
+1. SCN (System Change Number)
+O SCN é o relogio logico do Oracle. É um numero sequencial que funciona como um carimbo de data/hora de extrema precisão (não usa o relogio do servidor mas sim um numero que avança incrementa a cada evento ou comando commit)
+-Como funciona: Cada vez que um usuario faz um commit, O oracle gera um novo SCN.
+-Para que serve: Ele garante a consistencia dos dados. Se o banco cair, o oracle olha para o SCN para saber
+exatamente até que ponto os arquivos estavam sincronizados e o que precisa ser recuperado.
+Recuperação: é usado pelo motor do oracle, para saber exatamente até que ponto aplicar os arquivos de redolog durante a recuperação de falha
+Flashback: Permite que recursos como o Flashback Query voltem ou consultem dados a um ponto especifico no tempo usando um SCN como referencia
+
+
+
+2. REDO LOG (ONLINE REDO LOG)
+É o mecanismo de segurança imediato da Oracle. Ele registra todas as alterações feitas no banco de dados (INSERT, UPDATE, DELETE, etc) antes mesmo que elas sejam gravadas permanentemente nos arquivos de dados finais.
+
+Como funciona: O oracle trabalha com um conjunto circular de arquivos de redo log (geralmente no minimo 3) Quando o arquivo 1 enche, ele passa a gravar no arquivo 2, depois o 3, e quando o 3 enche, ele volta a sobreescrever o arquivo 1.
+Esses logs permitem:
+
+Recuperação após falhas: Em caso de falha no sistema (como perda de energia ou falha de hardware), o Oracle usa os redo logs para restaurar todas as transações que estavam em andamento.
+Proteção contra perda de dados: Como as alterações são registradas no redo antes mesmo de serem confirmadas na memória ou no disco, ele garante que o banco de dados possa retornar a um estado consistente.
+Estrutura do Redo Log
+Os redo logs consistem em dois tipos principais:
+
+Redo Log Files: Arquivos que registram todas as alterações feitas no banco de dados.
+Online Redo Log Groups: Conjuntos de arquivos redo que se alternam para garantir que sempre haja espaço disponível para novos registros de transações.
+
+3. ARCHIVED LOG (ARCHIVELOG MODE)
+Como os arquivos de redo log são circulares e sobreescritos com o tempo, o banco de dados perderia o historico antigo se não o salvasse. O arquive log é a copia permanente do Redo Log.
+Como funciona: Quando o banco está em modo ARCHIVELOG, toda vez que um arquivo de redo log encher e vai ser sobreescrito, um processo background (ARCn) tira uma copia desse arquivo e salva em um diretorio seguro
+Para que serve: Permite fazer a recuperação de desastres (Point-in-time recovery). Se o disco der problema, podemos pegar o bkp e aplicar todos os archive logs gerados até o ultimo minuto exato antes da falha.
+
+
+4. FLASHBACK
+O flashback
