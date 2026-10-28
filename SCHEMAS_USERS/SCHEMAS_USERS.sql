@@ -189,3 +189,13 @@ SCRIPT: Comando usado para alterar o profile default de um user
 ORIGEM: Notion (PROFILE USERS)
 ============================================================
 ALTER USER <USERNAME> PROFILE <PROFILENAME>;
+
+============================================================
+SCRIPT: Script para consultar o status de um schema/usuario
+============================================================
+  
+SELECT USERNAME, ACCOUNT_STATUS, TO_CHAR(EXPIRY_DATE, 'DD/MM/YYYY HH24:MI:SS') FROM DBA_USERS WHERE USERNAME IN ('DBSNMP', 'SYSMAN');
+
+
+
+
