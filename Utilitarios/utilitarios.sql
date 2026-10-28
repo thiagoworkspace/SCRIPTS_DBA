@@ -214,6 +214,12 @@ select STAT_NAME,ROUND((VALUE/1024/1024/1024),2) || ' GB' ,COMMENTS from v$ossta
 stat_name IN ('PHYSICAL_MEMORY_BYTES');
 
 ============================================================
+SCRIPT: Scruot para consultar a data de criação do banco
+============================================================
+SELECT NAME, TO_CHAR(CREATED, 'DD/MM/YYYY HH24:MI:SS') FROM GV$DATABASE;
+
+	
+============================================================
 SCRIPT: Passo a Passo para atualizar o Opatch + aplicar patches
 ============================================================
 # OBS: Caso esteja em um ambiente clusterizado, com mais de um node, deve seguir os passos abaixo para cada node - rowlling.
