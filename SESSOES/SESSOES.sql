@@ -242,3 +242,37 @@ from v$sesstat s join v$statname n on n.statistic# = s.statistic#
 join v$session sn on sn.sid = s.sid 
 where n.name like 'redo size' and s.value!=0
 order by redo_gb desc;
+
+
+============================================================================
+SCRIPT: Script para consultar quanto tempo uma sessão está ativa ou inativa
+============================================================================
+
+SELECT 
+    s.inst_id,
+    s.sid,
+    s.serial#,
+    s.username,
+    s.osuser,
+    s.machine,
+    s.program,
+    s.sql_id,
+    s.status,
+    -- Tempo ativo formatado em HH:MM:SS
+    EXTRACT(DAY FROM numtodsinterval(s.last_call_et, 'SECOND')) * 24 +
+    EXTRACT(HOUR FROM numtodsinterval(s.last_call_et, 'SECOND')) || ':' ||
+    TO_CHAR(EXTRACT(MINUTE FROM numtodsinterval(s.last_call_et, 'SECOND')), 'FM00') || ':' ||
+    TO_CHAR(EXTRACT(SECOND FROM numtodsinterval(s.last_call_et, 'SECOND')), 'FM00') AS tempo_ativo,
+    s.last_call_et AS tempo_ativo_segundos,
+    q.sql_text
+FROM 
+    Gv$session s
+LEFT JOIN 
+    Gv$sql q ON s.sql_id = q.sql_id AND s.sql_child_number = q.child_number
+WHERE 
+    s.status in ('ACTIVE','INACTIVE')                -- Garante que a sessão está trabalhando ativamente
+    AND s.username IS NOT NULL         -- Ignora processos internos do background do Oracle
+    AND s.sql_id = 'gn0hnaw3nnr4p';  -- Substitua pelo SQL_ID desejado
+
+
+
