@@ -82,3 +82,43 @@ Mongo().getDBNames().forEach(function(db)){
       Mongo().getDb(db).dropDatabase();
      }
 };
+
+
+
+=========================================================================
+
+O que é CRUD?
+CRUD é uma sigla para Create, Read, Upadte e Delete;
+É onde inserimos dados, resgatamos/lemos dados, atualizamos dados e deletamos/removemos dados;
+As quatro operações basicas de banco de dados, tanto relacional quanto não-relacional.
+Praticamente toda aplicação terá um CRUD
+
+Tudo é documento
+Sempre que vamos trabalhar com MongoDB é comum adicionarmos varias entidades com chaves {}
+Sempre que adicionamos chave a algum local, chamamos de document (documento)
+Ou seja, é bem comum ouvir: inserir um document na collection
+Onde em SQL seria, inserir o dado na tabela.
+
+Inserindo dados
+Para inserir um document utilizamos o método insertOne
+desta maneira: db.<collection>.insertOne({<dados>})
+Onde dados representa o conjunto de chaves e valores do dado em questão.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
