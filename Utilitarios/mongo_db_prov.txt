@@ -1,1 +1,84 @@
 
+--Criar uma collection com dados de nomes de pessoas e salarios
+--Utilizar o comando find para verificar os registros
+--verificar todas as collections
+
+
+db.salarios.insertOne({nome: "teste", salario: 10000})
+db.salarios.insertOne({nome: "teste2", salario: 14000})
+db.salarios.insertOne({nome: "teste3", salario: 5000})
+
+
+db.salarios.find()
+
+show collections
+
+
+A Chave _id
+Todo  registro no banco vem com uma chave chamada de _id;
+Esta chave tem como objetivo criar um identificador unico para todo registro;
+Ele consegue ser unico pois é baseado no tempo em que é criado, mesmo que os dados sejam inseridos simultaneamente, ids serão distintos;
+Essa funcionalidade é que ele possui um indice, agilizando a consulta por esta chave;.
+É retornado de forma automatica sempre que usa um find.
+
+db.pessoas.find()
+
+Removendo collections
+Podemos remover collections quando elas nao forem mais necessárias ou se erramos o nome por exemplo.
+O comando é: db.<collection>.drop()
+
+Removendo bancos de dados
+O comando é: db.dropDatabase()
+Após os comando, todos os dados e collections serão excluidos.
+
+use <banco>
+db.dropDatabase()
+
+
+Exercício 
+Remover a collection de salarios
+E depois remova o banco em que ela se encontra.
+
+
+Importar bancos em JSON
+Um formato muito encontrado de bancos de mongodb é .json
+Vamos utilizar uma funcionalidade de tools para realizar a import.
+O comando é: mongoimport <arquivo> -d <database> -c <collection>
+Desta maneira criamos um banco de dados nomeado e sua collection
+(os arquivos estão no curso da udemy)
+(tem que baixar o mongodb database tools)
+
+Exportar bancos em JSON
+Outra função comum é exportar bancos de dados;
+Para esta ação utilizamos: mongoexport -c <collection> -d <database> -o <output>
+
+Exportar muitas collections
+Quando o banco possui mais de uma collection a melhor opção de exportação é o mongodump
+Utilizamos assim: mongodump -d <banco> -o <diretorio>
+(Criar um banco com duas collections para testar o mongodump)
+
+Importando dados do mongodump
+Para importar os arquivos gerados do mongodump, utilizamos o mongorestore
+O comando é o seguinte: mongorestore <diretorio>
+Não precisamos informar uma flag para o diretorio, apenas o caminho relativo a ele.
+
+
+Status do MongoDB
+Podemos checar algumas informações como: quantidade de consultas rodando, consumo de rede e outros dados
+O comando é: mongostat
+Teremos uma aba do terminal ocupada, atualizando todo o segundo trazendo informações em tempo real.
+
+o mongostat deve ser usado fora do "console do banco"
+
+
+Forma de remover todos os bancos
+Podemos criar um loop no nosso terminal que vai remover todos os bancos não necessarios.
+Ou seja, precisamos preservar: admin, config e local
+Os outros podem ser removidos.
+Vamos criar o snippet e rodar no mongoshell.
+
+Mongo().getDBNames().forEach(function(db)){
+  if (['admin', 'config', 'local'].indexOf(db) <0){
+      Mongo().getDb(db).dropDatabase();
+     }
+};
