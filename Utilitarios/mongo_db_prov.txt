@@ -102,21 +102,43 @@ Onde em SQL seria, inserir o dado na tabela.
 Inserindo dados
 Para inserir um document utilizamos o método insertOne
 desta maneira: db.<collection>.insertOne({<dados>})
-Onde dados representa o conjunto de chaves e valores do dado em questão.
+Onde dados representa o conjunto de chaves e valores do dado em questão
 
 
 
 
+EXERCICIO
+Criar uma collection chamada provas
+Criar 2 dados com nome de aluno e um array chamado notas, com notas de provas.
+Exibir todos os dados.
+
+
+Nao ha relação entre os dados
+Em uma collection nao precisamos respeitar as chaves dos outros documents.
+Ou seja, o banco relacional precisa adicionar dados das colunas e em mongodb nao existe essa regra
+Então podemos ter documents totalmente diferentes em uma collection
 
 
 
+INSERINDO VARIOS DADOS
+
+Podemos tbm inserir varios dados de uma vez só, com o método insertMany
+A sintaxe é: db.<collection>.insertMany([<dados>])
+db.provas.insertMany([{nome: "Maria", notas: [10, 5, 6]}, {nome: "Joaquina", notas: [10, 8]]}])
 
 
 
+Exercicio 6
+Criar uma collection chamada mercado,
+Com o comando de inserção de dados multiplos, insira produtos com nome, preço e disponibilidade. 
 
 
-
-
+VOLTANDO AO _ID
+Já sabemos que o _id é unico e é criado em todos os documents da collections
+Porem nao necessariamente precisamos deixar o mongodb criar
+podemos criar nosso proprio _id
+exemplo: db.<collection>.insertOne({_id: "meuId", nome: "Matheus"})
+db.mercado.insertOne({_id: "1001", nome: "Vassoura", preco: 14.99})
 
 
 
