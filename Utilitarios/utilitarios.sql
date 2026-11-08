@@ -736,3 +736,14 @@ SELECT SCN_TO_TIMESTAMP(CURRENT_SCN) FROM DUAL;
 
 --Descobrir o SCN aproximado de uma data/hora especifica no passado.
 SELECT TIMESTAMP_TO_SCN(TO_TIMESTAMP('25/10/2026 10:00:00', 'DD/MM/YYYY HH24:MI:SS')) FROM DUAL;
+
+--Consultar o historico aproximado de SCNs
+SELECT 
+    time_dp AS timestamp_geracao, 
+    scn AS scn_gerado
+FROM 
+    sys.smon_scn_time
+ORDER BY 
+    time_dp DESC;
+
+
