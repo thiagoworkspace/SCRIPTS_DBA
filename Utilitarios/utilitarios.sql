@@ -766,8 +766,20 @@ ORDER BY
 SELECT * FROM employees_fb AS OF SCN '<SCN_NUMBER>' ORDER BY emp_id;
 
 PROMPT === STEP 5: Query the past by TIMESTAMP ===
-SELECT * FROM employees_fb
+SELECT * FROM <schema.table>
   AS OF TIMESTAMP TO_TIMESTAMP('<TIMESTAMP_NUMBER>', 'YYYY-MM-DD HH24:MI:SS.FF')
 ORDER BY emp_id;
 
+--Query unificada para consultar os dois estados da tabela em uma unica saida.
+
+SELECT 'ONLY IN PAST' AS src, p.* FROM (
+  SELECT * FROM <schema.table> AS OF SCN '<scn_number>'
+  MINUS
+  SELECT * FROM <schema.table>) p
+UNION ALL
+SELECT 'ONLY NOW', n.* FROM (
+  SELECT * FROM <schema.table>
+  MINUS
+  SELECT * FROM <schema.table> AS OF SCN '<scn_number>') n
+ORDER BY 2, 1;
 
