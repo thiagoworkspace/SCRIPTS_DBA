@@ -762,4 +762,12 @@ FROM
 ORDER BY 
     sequence# DESC;
 
+--Query de exemplo para consultar o estado de uma tabela com base no SCN e TIMESTAMP
+SELECT * FROM employees_fb AS OF SCN '<SCN_NUMBER>' ORDER BY emp_id;
+
+PROMPT === STEP 5: Query the past by TIMESTAMP ===
+SELECT * FROM employees_fb
+  AS OF TIMESTAMP TO_TIMESTAMP('<TIMESTAMP_NUMBER>', 'YYYY-MM-DD HH24:MI:SS.FF')
+ORDER BY emp_id;
+
 
