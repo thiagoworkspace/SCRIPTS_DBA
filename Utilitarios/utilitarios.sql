@@ -734,6 +734,9 @@ SELECT CURRENT_SCN FROM V$DATABASE;
 --Converter o SCN atual para a data/hora correspondente
 SELECT SCN_TO_TIMESTAMP(CURRENT_SCN) FROM DUAL;
 
+--Converter a data/hora atual para o SCN.
+SELECT TIMESTAMP_TO_SCN(SYSDATE) FROM DUAL;
+
 --Descobrir o SCN aproximado de uma data/hora especifica no passado.
 SELECT TIMESTAMP_TO_SCN(TO_TIMESTAMP('25/10/2026 10:00:00', 'DD/MM/YYYY HH24:MI:SS')) FROM DUAL;
 
@@ -744,6 +747,19 @@ SELECT
 FROM 
     sys.smon_scn_time
 ORDER BY 
-    time_dp DESC;
+    time_dp ASC;
+
+
+--Listar os SCNs de arquivamento (gerados por geração de archive log)
+SELECT 
+    sequence#,
+    first_time AS inicio_geracao,
+    first_change# AS scn_inicial,
+    next_change# AS scn_final,
+    (next_change# - first_change#) AS scns_gerados_no_periodo
+FROM 
+    v$archived_log
+ORDER BY 
+    sequence# DESC;
 
 
