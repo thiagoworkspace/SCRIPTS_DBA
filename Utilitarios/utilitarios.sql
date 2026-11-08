@@ -740,6 +740,11 @@ SELECT TIMESTAMP_TO_SCN(SYSDATE) FROM DUAL;
 --Descobrir o SCN aproximado de uma data/hora especifica no passado.
 SELECT TIMESTAMP_TO_SCN(TO_TIMESTAMP('25/10/2026 10:00:00', 'DD/MM/YYYY HH24:MI:SS')) FROM DUAL;
 
+--Consulta para descobrir o SCN em X minutos/horas/dias atrás.
+SELECT TIMESTAMP_TO_SCN(SYSTIMESTAMP - INTERVAL '15' MINUTE) AS SCN_PASSADO FROM DUAL;
+SELECT TIMESTAMP_TO_SCN(SYSTIMESTAMP - INTERVAL '2' HOURS) AS SCN_PASSADO FROM DUAL;
+SELECT TIMESTAMP_TO_SCN(SYSTIMESTAMP - INTERVAL '1' DAY) AS SCN_PASSADO FROM DUAL;
+
 --Consultar o historico aproximado de SCNs
 SELECT 
     time_dp AS timestamp_geracao, 
@@ -782,4 +787,17 @@ SELECT 'ONLY NOW', n.* FROM (
   MINUS
   SELECT * FROM <schema.table> AS OF SCN '<scn_number>') n
 ORDER BY 2, 1;
+
+
+--Passo a passo para realizar um flashback table
+--obs: Para que o FLASHBACK TABLE funcione, os dados perdidos devem estar dentro do tempo de retenção da UNDO (UNDO_RETENTION) e ter certeza de que não ocorreu alteração de DDL na tabela pois isso "reseta" o SCN
+--obs: Boas praticas saber tbm o tamanho da tabela e se possui dependencias como tabela mae/filha
+-- Habilitar o row movement da tabela
+ALTER TABLE <SCHEMA.TABLE> ENABLE ROW MOVEMENT;
+
+-- Script para voltar o estado da tabela
+FLASHBACK TABLE <SCHEMA.TABLE> TO SCN <SCN_NUMBER>
+
+--Apos a confirmação de que está tudo ok, desabilitar 
+ALTER TABLE <SCHEMA.TABLE> DISABLE ROW MOVEMENT;
 
